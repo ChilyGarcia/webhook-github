@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       if (TARGET_BRANCHES.includes(branch)) {
         const commits = payload.commits.map(c => `- ${c.message}`).join('\n').slice(0, 1900);
         await axios.post(DISCORD_WEBHOOK_URL, {
-          content: `📦 Push a \\`${branch}\\` por ${payload.pusher.name}\nCommits:\n${commits}`,
+          content: `📦 Push a \`${branch}\` por ${payload.pusher.name}\nCommits:\n${commits}`,
         });
       }
     }
@@ -26,14 +26,14 @@ export default async function handler(req, res) {
       const targetBranch = payload.pull_request.base.ref;
       if (TARGET_BRANCHES.includes(targetBranch)) {
         await axios.post(DISCORD_WEBHOOK_URL, {
-          content: `🔀 Pull Request hacia \\`${targetBranch}\\`: ${payload.pull_request.title}\nAutor: ${payload.pull_request.user.login}\n${payload.pull_request.html_url}`,
+          content: `🔀 Pull Request hacia \`${targetBranch}\`: ${payload.pull_request.title}\nAutor: ${payload.pull_request.user.login}\n${payload.pull_request.html_url}`,
         });
       }
     }
 
     res.status(200).json({ ok: true });
   } catch (err) {
-    console.error('Error enviando a Discord:', err);
+    console.error('Error enviando a Discord:', err.message);
     res.status(500).json({ error: 'Error al enviar a Discord' });
   }
 }
