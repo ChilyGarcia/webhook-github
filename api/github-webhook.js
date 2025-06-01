@@ -15,9 +15,33 @@ export default async function handler(req, res) {
     if (event === 'push') {
       const branch = payload.ref.replace('refs/heads/', '');
       if (TARGET_BRANCHES.includes(branch)) {
-        const commits = payload.commits.map(c => `- ${c.message}`).join('\n').slice(0, 1900);
+        const commitList = payload.commits.map(c =>
+          `[\`${c.id.slice(0, 7)}\`](${c.url}) - ${c.message}`
+        ).join('\n');
+
+        const modifiedFiles = [
+          ...new Set(payload.commits.flatMap(c => [...c.added, ...c.modified, ...c.removed]))
+        ]
+          .slice(0, 10)
+          .map(f => `- ${f}`)
+          .join('\n');
+
         await axios.post(DISCORD_WEBHOOK_URL, {
-          content: `📦 Push a \`${branch}\` por ${payload.pusher.name}\nCommits:\n${commits}`,
+          embeds: [
+            {
+              title: `📦 Push a ${branch}`,
+              description:
+                `**Repositorio:** ${payload.repository.full_name}\n` +
+                `**Autor:** ${payload.pusher.name}\n\n` +
+                `**Commits:**\n${commitList}\n\n` +
+                `**Archivos tocados:**\n${modifiedFiles || 'Ninguno listado.'}`,
+              color: 0x00b0f4,
+              timestamp: new Date().toISOString(),
+              author: {
+                name: payload.pusher.name
+              }
+            }
+          ]
         });
       }
     }
@@ -26,7 +50,22 @@ export default async function handler(req, res) {
       const targetBranch = payload.pull_request.base.ref;
       if (TARGET_BRANCHES.includes(targetBranch)) {
         await axios.post(DISCORD_WEBHOOK_URL, {
-          content: `🔀 Pull Request hacia \`${targetBranch}\`: ${payload.pull_request.title}\nAutor: ${payload.pull_request.user.login}\n${payload.pull_request.html_url}`,
+          embeds: [
+            {
+              title: `🔀 Pull Request hacia ${targetBranch}`,
+              url: payload.pull_request.html_url,
+              description:
+                `**Repositorio:** ${payload.repository.full_name}\n` +
+                `**Título:** ${payload.pull_request.title}\n` +
+                `**Autor:** ${payload.pull_request.user.login}`,
+              color: 0x4caf50,
+              timestamp: new Date().toISOString(),
+              author: {
+                name: payload.pull_request.user.login,
+                icon_url: payload.pull_request.user.avatar_url
+              }
+            }
+          ]
         });
       }
     }
