@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1378774657775173674/LgF9bFTIBHbgcMkMEnSgQj7m-17mC3iPP0iz8p3eNgyND5CgMbHX97g9_im58whcOnyv';
+const WEBHOOKS = {
+  'CerebiiaCompany/calidad': 'https://discord.com/api/webhooks/1378774657775173674/LgF9bFTIBHbgcMkMEnSgQj7m-17mC3iPP0iz8p3eNgyND5CgMbHX97g9_im58whcOnyv',
+  'CerebiiaCompany/recursos-humanos': 'https://discord.com/api/webhooks/1378809096370786554/WOuYBxM2N4GqYe73Nc8ik2bcMpFNZWcfIkslJEhWxC3ICqA5ubXdHyD1M2N-gj6kIv4K'
+};
+
 const TARGET_BRANCHES = ['main', 'develop'];
 
 export default async function handler(req, res) {
@@ -10,6 +14,13 @@ export default async function handler(req, res) {
 
   const event = req.headers['x-github-event'];
   const payload = req.body;
+  const repoName = payload.repository.full_name;
+  const webhookUrl = WEBHOOKS[repoName];
+
+  if (!webhookUrl) {
+    console.warn(`Repositorio sin webhook configurado: ${repoName}`);
+    return res.status(200).json({ message: `No se configuró webhook para ${repoName}` });
+  }
 
   try {
     if (event === 'push') {
@@ -26,12 +37,12 @@ export default async function handler(req, res) {
           .map(f => `- ${f}`)
           .join('\n');
 
-        await axios.post(DISCORD_WEBHOOK_URL, {
+        await axios.post(webhookUrl, {
           embeds: [
             {
               title: `📦 Push a ${branch}`,
               description:
-                `**Repositorio:** ${payload.repository.full_name}\n` +
+                `**Repositorio:** ${repoName}\n` +
                 `**Autor:** ${payload.pusher.name}\n\n` +
                 `**Commits:**\n${commitList}\n\n` +
                 `**Archivos tocados:**\n${modifiedFiles || 'Ninguno listado.'}`,
@@ -49,13 +60,13 @@ export default async function handler(req, res) {
     if (event === 'pull_request') {
       const targetBranch = payload.pull_request.base.ref;
       if (TARGET_BRANCHES.includes(targetBranch)) {
-        await axios.post(DISCORD_WEBHOOK_URL, {
+        await axios.post(webhookUrl, {
           embeds: [
             {
               title: `🔀 Pull Request hacia ${targetBranch}`,
               url: payload.pull_request.html_url,
               description:
-                `**Repositorio:** ${payload.repository.full_name}\n` +
+                `**Repositorio:** ${repoName}\n` +
                 `**Título:** ${payload.pull_request.title}\n` +
                 `**Autor:** ${payload.pull_request.user.login}`,
               color: 0x4caf50,
@@ -72,7 +83,7 @@ export default async function handler(req, res) {
 
     res.status(200).json({ ok: true });
   } catch (err) {
-    console.error('Error enviando a Discord:', err.message);
+    console.error(`Error enviando a Discord (${repoName}):`, err.message);
     res.status(500).json({ error: 'Error al enviar a Discord' });
   }
 }
