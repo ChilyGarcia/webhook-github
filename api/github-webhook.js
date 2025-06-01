@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/XXXXXXXXX/YYYYYYYYY';
+const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1378774657775173674/LgF9bFTIBHbgcMkMEnSgQj7m-17mC3iPP0iz8p3eNgyND5CgMbHX97g9_im58whcOnyv';
 const TARGET_BRANCHES = ['main', 'develop'];
 
 export default async function handler(req, res) {
