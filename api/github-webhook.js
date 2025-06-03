@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const WEBHOOKS = {
-  'CerebiiaCompany/calidad': 'https://discord.com/api/webhooks/1378774657775173674/LgF9bFTIBHbgcMkMEnSgQj7m-17mC3iPP0iz8p3eNgyND5CgMbHX97g9_im58whcOnyv',
-  'CerebiiaCompany/recursos-humanos': 'https://discord.com/api/webhooks/1378809096370786554/WOuYBxM2N4GqYe73Nc8ik2bcMpFNZWcfIkslJEhWxC3ICqA5ubXdHyD1M2N-gj6kIv4K'
+  'CerebiiaCompany/calidad': 'https://discord.com/api/webhooks/1379476884034949180/WHRzY9fgxsRqoVy_D6CpRXgbx-AnOFBtujArgx2jhS5vaoC1TDtr3MBiNHz3qYdfI50L',
+  'CerebiiaCompany/recursos-humanos': 'https://discord.com/api/webhooks/1379476558141718693/O8e7ZNbJ9V_hltmO6JlvkwnxLmE-sIb48uPlLoS4KBjv36BkEDJ2zZlTAlDJDdQaUAhh'
 };
 
 const TARGET_BRANCHES = ['main', 'develop'];
