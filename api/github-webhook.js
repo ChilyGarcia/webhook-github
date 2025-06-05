@@ -1,8 +1,11 @@
 import axios from 'axios';
+import dotenv from 'dotenv';
+
+dotenv.config(); // Asegúrate de cargar las variables de entorno (necesario en entornos como Node puro)
 
 const WEBHOOKS = {
-  'CerebiiaCompany/calidad': 'https://discord.com/api/webhooks/1379476884034949180/WHRzY9fgxsRqoVy_D6CpRXgbx-AnOFBtujArgx2jhS5vaoC1TDtr3MBiNHz3qYdfI50L',
-  'CerebiiaCompany/recursos-humanos': 'https://discord.com/api/webhooks/1379476558141718693/O8e7ZNbJ9V_hltmO6JlvkwnxLmE-sIb48uPlLoS4KBjv36BkEDJ2zZlTAlDJDdQaUAhh'
+  'CerebiiaCompany/calidad': process.env.WEBHOOK_CALIDAD,
+  'CerebiiaCompany/recursos-humanos': process.env.WEBHOOK_RECURSOS_HUMANOS
 };
 
 const TARGET_BRANCHES = ['main', 'develop'];
