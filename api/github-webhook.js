@@ -1,11 +1,13 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
 
-dotenv.config(); // Asegúrate de cargar las variables de entorno (necesario en entornos como Node puro)
+dotenv.config();
 
 const WEBHOOKS = {
   'CerebiiaCompany/calidad': process.env.WEBHOOK_CALIDAD,
-  'CerebiiaCompany/recursos-humanos': process.env.WEBHOOK_RECURSOS_HUMANOS
+  'CerebiiaCompany/recursos-humanos': process.env.WEBHOOK_RECURSOS_HUMANOS,
+  'CerebiiaCompany/transcription-microservice': process.env.WEBHOOK_TRANSCRIPTION_MICROSERVICE,
+  'CerebiiaCompany/cv-microservice': process.env.WEBHOOK_CV_MICROSERVICE
 };
 
 const TARGET_BRANCHES = ['main', 'develop'];
