@@ -9,6 +9,8 @@ const WEBHOOKS = {
   "CerebiiaCompany/transcription-microservice":
     process.env.WEBHOOK_TRANSCRIPTION_MICROSERVICE,
   "CerebiiaCompany/cv-microservice": process.env.WEBHOOK_CV_MICROSERVICE,
+  "CerebiiaCompany/transcription_frontend":
+    process.env.WEBHOOK_TRANSCRIPTION_FRONTEND,
 };
 
 const TARGET_BRANCHES = ["main", "develop"];
@@ -73,14 +75,13 @@ export default async function handler(req, res) {
 
     if (event === "pull_request") {
       const action = payload.action;
-      const allowedActions = ["opened", "reopened", "closed"]; // Only notify for these actions
+      const allowedActions = ["opened", "reopened", "closed"];
 
       const targetBranch = payload.pull_request.base.ref;
       if (
         TARGET_BRANCHES.includes(targetBranch) &&
         allowedActions.includes(action)
       ) {
-        // Add action-specific details to the notification
         const actionEmoji =
           action === "opened"
             ? "🔀"
