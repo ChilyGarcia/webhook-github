@@ -11,6 +11,8 @@ const WEBHOOKS = {
   "CerebiiaCompany/cv-microservice": process.env.WEBHOOK_CV_MICROSERVICE,
   "CerebiiaCompany/transcription_frontend":
     process.env.WEBHOOK_TRANSCRIPTION_FRONTEND,
+  "CerebiiaCompany/personal-data-frontend":
+    process.env.WEBHOOK_PERSONAL_DATA_FRONTEND,
 };
 
 const TARGET_BRANCHES = ["main", "develop"];
