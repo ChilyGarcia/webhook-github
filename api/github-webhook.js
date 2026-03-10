@@ -13,6 +13,7 @@ const WEBHOOKS = {
     process.env.WEBHOOK_TRANSCRIPTION_FRONTEND,
   "CerebiiaCompany/personal-data-frontend":
     process.env.WEBHOOK_PERSONAL_DATA_FRONTEND,
+  "CerebiiaCompany/fna-agendamiento-frontend": process.env.WEBHOOK_FNA_AGENDAMIENTO,
 };
 
 const TARGET_BRANCHES = ["main", "develop"];
