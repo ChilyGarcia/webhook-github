@@ -16,6 +16,7 @@ const WEBHOOKS = {
   "CerebiiaCompany/fna-agendamiento-frontend": process.env.WEBHOOK_FNA_AGENDAMIENTO,
   "CerebiiaCompany/fna-agendamiento-backend": process.env.WEBHOOK_FNA_AGENDAMIENTO_BACKEND,
   "CerebiiaCompany/cerebiia-adelantos-backend": process.env.WEBHOOK_CEREBIIA_ADELANTOS_BACKEND,
+  "CerebiiaCompany/cerebiia-adelantos-frontend": process.env.WEBHOOK_CEREBIIA_ADELANTOS_FRONTEND,
 };
 
 const TARGET_BRANCHES = ["main", "develop"];
